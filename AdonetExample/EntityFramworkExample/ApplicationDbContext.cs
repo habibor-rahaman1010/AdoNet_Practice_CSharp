@@ -26,8 +26,13 @@ namespace EntityFramworkExample
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
+            modelBuilder.Entity<CourseStudent>().HasKey((x) => new {x.CourseId, x.StudentId});
+            modelBuilder.Entity<CourseStudent>().ToTable("CourseStudents");
+            modelBuilder.Entity<Instructor>().ToTable("Instructors");
+            modelBuilder.Entity<Topic>().ToTable("Topics");
         }
+
         public DbSet<Student> Students { get; set; }
+        public DbSet<Course> Courses { get; set; }
     }
 }

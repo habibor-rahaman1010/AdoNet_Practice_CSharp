@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace EntityFramworkExample
 {
@@ -58,34 +59,140 @@ namespace EntityFramworkExample
                 });*/
 
 
-           //get list of student in dataabse
-           List<Student> allStudent = context.Students.ToList();
+            /*//get list of student in dataabse
+            List<Student> allStudent = context.Students.ToList();
 
-            foreach (Student student in allStudent)
+             foreach (Student student in allStudent)
+             {
+                 Console.WriteLine($"{student.Email}");
+             }
+
+             //get student by id...
+             Student? singleStudent = context.Students.Where(x => x.Id == 2).FirstOrDefault();
+             if (singleStudent != null)
+             {
+                 Console.WriteLine(singleStudent.Name);
+             }
+
+             //delete single student in database 
+             Student? s1 = context.Students.Where(x => x.Id == 15).FirstOrDefault();
+             if (s1 != null)
+             {
+                 context.Students.Remove(s1);
+             }
+
+             //delete multiple student in database 
+             List<Student> allStudent2 = context.Students.Where(x => x.Id > 15).ToList();
+             foreach (Student? student in allStudent2)
+             {
+                 context.Students.Remove(student);
+             }
+             context.SaveChanges();*/
+
+           /* Course course = new Course
             {
-                Console.WriteLine($"{student.Email}");
-            }
+                Title = "Python Programming Language",
+                Fees = 5000,
+                CourseInstructor = new Instructor
+                {
+                    Name = "Tamim Sahriar Subeen",
+                    Email = "tamimsahriar1010@gmail.com",
+                    Phone = "01390284343",
+                    Address = "Sidny - Australia"
+                },
+                Topics = new List<Topic>
+                {
+                    new Topic{Name = "Variable", Duration = 1},
+                    new Topic{Name = "List", Duration = 1},
+                    new Topic{Name = "Tuple", Duration = 1}
+                }
+            };
+
+            context.Courses.Add(course);
+            context.SaveChanges();*/
+
+            //find a topics by id and then print that all topics in this code...
+            Course? courses =  context.Courses.Include(x => x.Topics).Where(x => x.Id == 2).FirstOrDefault();
             
-            //get student by id...
-            Student? singleStudent = context.Students.Where(x => x.Id == 2).FirstOrDefault();
-            if (singleStudent != null)
+            if (courses != null)
             {
-                Console.WriteLine(singleStudent.Name);
+                courses.Title = "Python Programming";
+                foreach (Topic topic in courses.Topics)
+                {
+                    Console.WriteLine(topic.Name);
+                }
             }
 
-            //delete single student in database 
-            Student? s1 = context.Students.Where(x => x.Id == 15).FirstOrDefault();
-            if (s1 != null)
+            //find a course instractor by id and then that course instractor email update in this code...
+            Course? course1 = context.Courses.Include(x => x.CourseInstructor).Where(x => x.Id == 2).FirstOrDefault();
+            if (course1 != null)
             {
-                context.Students.Remove(s1);
+                //course1.CourseInstructor.Email = "apurbasaha378@gmail.com";
             }
 
-            //delete multiple student in database 
-            List<Student> allStudent2 = context.Students.Where(x => x.Id > 15).ToList();
-            foreach (Student? student in allStudent2)
+            //find a topics by id and then new topics add in that course...
+            Course? course2 = context.Courses.Include(x => x.Topics).Where(x => x.Id == 2).FirstOrDefault();
+            if (course2 != null)
             {
-                context.Students.Remove(student);
+                //course2.Topics.Add(new Topic { Name = "Queue data structure", Duration = 1 });
             }
+
+            // find course id and then that id all topics delete this code...
+            Course? course3 = context.Courses.Include(x => x.Topics).Where(x => x.Id == 2).FirstOrDefault();
+            if (course3 != null)
+            {
+                List<Topic> topp = course3.Topics.Where(x => x.CourseID > 0).ToList();
+                foreach (Topic topic in topp)
+                {
+                    //course3.Topics.Remove(topic);
+                }
+            }
+
+
+            Course course = new Course
+            {
+                Title = "Python Programming",
+                Fees = 6000,
+                CourseInstructor = new Instructor
+                {
+                    Name = "Tamim sahriar Subeen",
+                    Email = "tamimsahriarsubeen1010@gmail.com",
+                    Phone = "01789348943",
+                    Address = "Sidny - Australia"
+                },
+                Topics = new List<Topic>
+                {
+                    new Topic{Name = "For Loop", Duration = 1},
+                    new Topic{Name = "List Data Structure", Duration = 1},
+                    new Topic{Name = "Tuple", Duration = 1}
+                },
+                Students = new List<CourseStudent>
+                {
+                    new CourseStudent{Student = new Student{
+                        Name = "Habibor Rahaman",
+                        Cgpa = 3.78,
+                        Email = "habibor.rahaman1010@gmail.com",
+                        DateOfBirth = new DateTime(1999, 03, 05),
+                        Address = "Mohammodpur - Dhaka"
+                    }},
+                    new CourseStudent{Student = new Student{
+                        Name = "Hasan Ahmed",
+                        Cgpa = 3.28,
+                        Email = "hasanahmed@gmail.com",
+                        DateOfBirth = new DateTime(2000, 03, 05),
+                        Address = "Polton - Dhaka"
+                    }},
+                    new CourseStudent{Student = new Student{
+                        Name = "Md Tufayel Islam",
+                        Cgpa = 3.98,
+                        Email = "mdtufayelislam382@gmail.com",
+                        DateOfBirth = new DateTime(1997, 03, 05),
+                        Address = "Mirpur - Dhaka"
+                    }}
+                }
+            };
+
+            context.Courses.Add(course);
             context.SaveChanges();
         }
     }

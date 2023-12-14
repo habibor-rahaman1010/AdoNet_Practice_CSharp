@@ -14,5 +14,6 @@ namespace EntityFramworkExample
         public string Email { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Address { get; set; } 
+        public List<CourseStudent> Courses { get; set; }
     }
 }
